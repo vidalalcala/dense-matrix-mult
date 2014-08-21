@@ -10,7 +10,7 @@ export LD_LIBRARY_PATH=\
 iters=6
 
 # The different sizes of the matrices to compare
-sizes=`echo 5000`;
+sizes=`echo 50000`;
 
 # The name of each folder i.e. BLAS implementation
 
@@ -36,7 +36,7 @@ do
 	    export OMP_NUM_THREADS=$thr;
 	    echo "    #threads=$thr"
 	    printf "%10d " $thr >> $file;
-	    echo `./$method/ap.out $iters $s` | awk -F':' '{ print $NF;}' | | xargs printf '%10.5f\n' >> $file;
+	    echo `./$method/ap.out $iters $s` | awk -F':' '{ print $NF;}' |  xargs printf '%10.5f\n' >> $file;
 	done
     done
 done

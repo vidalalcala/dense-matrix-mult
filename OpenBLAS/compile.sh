@@ -1,12 +1,11 @@
-OPENBLAS_LIBDIR=/opt/openblas/
-OPENBLAS_INCDIR=/opt/openblas/
+export OPENBLAS_LIBDIR="/opt/OpenBLAS/lib"
+export OPENBLAS_INCDIR="/opt/OpenBLAS/include"
 
-gcc \
--I $OPENBLAS_INCDIR \
--L $OPENBLAS_LIBDIR \
+gcc -static \
 -O4 -msse2 -msse3 -msse4 \
+-I $OPENBLAS_INCDIR \
 dense_mult.c \
--lopenblas -fopenmp \
+-L $OPENBLAS_LIBDIR -lopenblas -fopenmp \
 -o ap.out
 
 

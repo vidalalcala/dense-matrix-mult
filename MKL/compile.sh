@@ -1,6 +1,6 @@
-MKL_INCDIR=/opt/composer_xe_2013.2.146/mkl/include
-MKL_LIBDIR=/opt/composerxe/mkl/lib/intel64/
-MKL_RT_LIBDIR=/opt/composer_xe_2013/lib/intel64/
+#MKL_INCDIR=/opt/intel/mkl/include
+#MKL_LIBDIR=/opt/intel/mkl/lib/intel64/
+#MKL_RT_LIBDIR=/opt/lib/intel64/
 
 gcc \
 -I $MKL_INCDIR \
