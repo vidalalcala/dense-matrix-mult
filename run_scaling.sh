@@ -10,13 +10,13 @@ export LD_LIBRARY_PATH=\
 iters=6
 
 # The different sizes of the matrices to compare
-sizes=`echo 50000`;
+sizes=`echo 10000`;
 
 # The name of each folder i.e. BLAS implementation
 
 dirs="ACML ATLAS EIGEN MKL OpenBLAS";
 
-threads=`seq 2 1 48`
+threads=`seq 4 1 48`
 
 for s in `echo $sizes`;
 do
