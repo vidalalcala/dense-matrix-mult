@@ -1,6 +1,6 @@
 /* dense_mult.c
  * Copyright (C) 2013, Siddharth Gopal (gcdart AT gmail)
- *
+dgemm_ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2.1 of the GNU Lesser General Public License
  * as published by the Free Software Foundation.
@@ -97,13 +97,19 @@ int main(int argc, char** argv){
 
   totaltime = 0;
 
+  char NoTrans = 'N';
+
+  double alpha = 1.0;
+
+  double beta = 0.0;
+
   REP(i,nrep) {
 
     double runtime;
 
     gettimeofday ( &before , NULL );
   
-    cblas_dgemm ( CblasRowMajor, CblasNoTrans, CblasNoTrans , m , n , k , 1.0 , A , k , B , n , 0.0 , C , n );
+    dgemm_(&NoTrans , &NoTrans , &m , &n , &k , &alpha , A , &m , B , &k , &beta , C , &m );
 
     gettimeofday ( &after , NULL );
 
