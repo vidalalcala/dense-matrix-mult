@@ -10,7 +10,7 @@ require 'pl'
 -- Parse command-line options
 local opt = lapp([[
    -t,--threads       (default 8)           number of threads
-   -N,-numRows		  (default 100) 		number of matrix rows
+   -N,--numRows		  (default 100) 		number of matrix rows
 ]])
 
 -- threads
@@ -18,8 +18,9 @@ torch.setnumthreads(opt.threads)
 print('<torch> set nb of threads to ' .. torch.getnumthreads())
 
 -- create matrices
-A = torch.rand(numRows,numRows)
-B = torch.rand(numRows,numRows)
+N = opt.numRows
+A = torch.rand(N,N)
+B = torch.rand(N,N)
 
 -- start timer
 timer = torch.Timer()
@@ -28,5 +29,5 @@ timer = torch.Timer()
 C = torch.mm(A,B)
 
 -- show elapsed time
-print('Time elapsed for multiplication of two matrices with ' .. numRows .. ' rows : ' .. timer:time().real .. ' seconds')
+print('Time elapsed for multiplication of two matrices with ' .. opt.numRows .. ' rows : ' .. timer:time().real .. ' seconds')
 
