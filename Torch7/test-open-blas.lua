@@ -50,7 +50,7 @@ luatrace.tron()
 
 for j = 1 , opt.iterations , 1 do
    print('<torch> Iteration: ', j , ' of ', opt.iterations)
-   R = torch.gercol(v,w)
+   R = torch.ger(v,w)
 end
 
 luatrace.troff()
