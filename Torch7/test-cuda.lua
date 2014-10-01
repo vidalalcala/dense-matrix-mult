@@ -6,49 +6,59 @@
 
 require 'torch'
 require 'pl'
+require 'cutorch'
+print(  cutorch.getDeviceProperties(cutorch.getDevice()) )
 
 
-function torch.gercol(v,w)
+function torch.gercuda(v,w)
+   
    local n = v:size(1)
    local m = w:size(1)
-   local vw = torch.Tensor( n, m)
+   local vw = torch.CudaTensor( n, m)
    for j =  1, m, 1 do
+      wj = torch.CudaTensor(1)
+      wj:float()
       local vwj = vw:select(2,j)
-      vwj = torch.mul(v , w[j])
+      v:cuda()
+      vwj:mul( v , wj )
    end
    return vw
 end
 
 -- Parse command-line options
 local opt = lapp([[
-   -t,--threads       (default 11)          number of threads
+   -t,--threads       (default 2)          number of threads
    -N,--numRows		  (default 10002) 		number of matrix rows
    -i,--iterations   (default 10000)         number of iterations
 ]])
 
 -- threads
-torch.setnumthreads(opt.threads)
-print('<torch> set nb of threads to ' .. torch.getnumthreads())
+--torch.setnumthreads(opt.threads)
+--print('<torch> set nb of threads to ' .. torch.getnumthreads())
 
--- create matrices
-N = opt.numRows
-A = torch.Tensor(N,N)
-v = torch.Tensor(N)
-w = torch.Tensor(N)
+-- use floats
+-- torch.setdefaulttensortype('torch.FloatTensor')
 
 -- start timer
 timer = torch.Timer()
 print('<torch> timer started')
 
+
+-- create matrices
+N = opt.numRows
+A = torch.CudaTensor( N , N )
+v = torch.CudaTensor( N )
+w = torch.CudaTensor( N )
+
 -- perform matrix operation
 
--- Find bottlenecks
 --luatrace = require("luatrace")
 --luatrace.tron()
 
 for j = 1 , opt.iterations , 1 do
    print('<torch> Iteration: ', j , ' of ', opt.iterations)
-   w:addmv( A , v)
+
+   w:addmv( A , v )
 end
 
 --luatrace.troff()
