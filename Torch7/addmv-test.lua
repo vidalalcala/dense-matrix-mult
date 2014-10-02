@@ -11,7 +11,7 @@ print(  cutorch.getDeviceProperties(cutorch.getDevice()) )
 
 -- Parse command-line options
 local opt = lapp([[
-   -t,--threads      (default 10)             number of threads
+   -t,--threads      (default 7)             number of threads
    -N,--numRows      (default 10000) 	     number of matrix rows
    -i,--iterations   (default 1000)         number of iterations
 ]])
@@ -32,11 +32,11 @@ function torch.gercuda(v,w)
 end
 
 -- threads
--- torch.setnumthreads(opt.threads)
--- print('<torch> set nb of threads to ' .. torch.getnumthreads())
+torch.setnumthreads(opt.threads)
+print('<torch> set nb of threads to ' .. torch.getnumthreads())
 
 -- use floats
--- torch.setdefaulttensortype('torch.FloatTensor')
+torch.setdefaulttensortype('torch.FloatTensor')
 
 -- Matrices in the GPU
 N = opt.numRows

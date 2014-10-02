@@ -11,9 +11,9 @@ print(  cutorch.getDeviceProperties(cutorch.getDevice()) )
 
 -- Parse command-line options
 local opt = lapp([[
-   -t,--threads      (default 10)             number of threads
-   -N,--numRows      (default 10000) 	     number of matrix rows
-   -i,--iterations   (default 10)         number of iterations
+   -t,--threads      (default 7)             number of threads
+   -N,--numRows      (default 10002) 	     number of matrix rows
+   -i,--iterations   (default 100)         number of iterations
 ]])
 
 function torch.gercuda( vw , v , w )
@@ -27,13 +27,12 @@ function torch.gercuda( vw , v , w )
 end
 
 -- function that calculates the matrix v w^T
-function torch.gercol( vw , v , w )
+function torch.gercol(vw,v,w)
    local n = v:size(1)
    local m = w:size(1)
-   for j =  1, m, 1 do
+   for j = 1, m, 1 do
       local vwj = vw:select(2,j)
-      vwj[{}] = v
-      vwj:mul( w[j] )
+      vwj = torch.mul( v, w[j] )
    end
 end
 
@@ -42,7 +41,7 @@ torch.setnumthreads(opt.threads)
 print('<torch> set nb of threads to ' .. torch.getnumthreads())
 
 -- use floats
--- torch.setdefaulttensortype('torch.FloatTensor')
+torch.setdefaulttensortype('torch.FloatTensor')
 
 -- Matrices in the GPU
 N = opt.numRows
@@ -70,11 +69,11 @@ print('<torch> timer started')
 -- perform matrix operation
 
 for j = 1 , opt.iterations , 1 do
-   torch.ger( R_cpu , v_cpu , w_cpu )
+    torch.gercol(R_cpu , v_cpu , w_cpu )
 end
 
 -- show elapsed time
-print('Time elapsed for ' , opt.iterations, ' matrix-vector addition with ' .. opt.numRows .. ' rows : ' .. timer:time().real .. ' seconds with OpenBLAS')
+print('Time elapsed for ' , opt.iterations, ' vector-vector ger product with ' .. opt.numRows .. ' rows : ' .. timer:time().real .. ' seconds with OpenBLAS')
 
 -- cuBLAS test
 -- start timer
@@ -88,7 +87,7 @@ for j = 1 , opt.iterations , 1 do
 end
 
 -- show elapsed time
-print('Time elapsed for ' , opt.iterations, ' matrix-vector addition with ' .. opt.numRows .. ' rows : ' .. timer:time().real .. ' seconds with cuBLAS')
+print('Time elapsed for ' , opt.iterations, ' vector-vector ger product with ' .. opt.numRows .. ' rows : ' .. timer:time().real .. ' seconds with cuBLAS')
 
 
 -- Compare result
