@@ -13,7 +13,7 @@ print(  cutorch.getDeviceProperties(cutorch.getDevice()) )
 local opt = lapp([[
    -t,--threads      (default 7)             number of threads
    -N,--numRows      (default 10000) 	     number of matrix rows
-   -i,--iterations   (default 1000)         number of iterations
+   -i,--iterations   (default 10)         number of iterations
 ]])
 
 function torch.gercuda(v,w)
